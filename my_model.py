@@ -455,7 +455,7 @@ class Transformer(nn.Module):
         return x
 
 
-def test_model():
+def test_my_model():
     #following code is to login huggingface so as to make use the official Llama model, but Meta refused 
     # Login with your token
     # login(token="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")
@@ -512,7 +512,7 @@ def test_model():
 
     
 # if __name__ == '__main__':
-#     test_model() 
+#     test_my_model() 
 
 
 

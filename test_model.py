@@ -1,6 +1,6 @@
 from my_model import RMSNorm
 from transformers import AutoTokenizer
-from my_model import precompute_freqs_cis,test_model
+from my_model import precompute_freqs_cis,test_my_model
 
 # def test():
 #     test1=test_class()
@@ -9,4 +9,4 @@ from my_model import precompute_freqs_cis,test_model
 
 
 if __name__ == '__main__':
-    test_model()
+    test_my_model()
