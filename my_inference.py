@@ -125,28 +125,28 @@ class Llama:
 
 
 
-if __name__ == '__main__':
-    prompts = [
-        "Simply put, the theory of relativity states that ",
-        "If Google was an Italian company founded in Milan, it would",
-        # Few shot promt
-        """Translate English to French:
+# if __name__ == '__main__':
+#     prompts = [
+#         "Simply put, the theory of relativity states that ",
+#         "If Google was an Italian company founded in Milan, it would",
+#         # Few shot promt
+#         """Translate English to French:
         
-        sea otter => loutre de mer
-        peppermint => menthe poivrée
-        plush girafe => girafe peluche
-        cheese =>""",
-        # Zero shot prompt
-        """Tell me if the following person is actually Doraemon disguised as human:
-        Name: Umar Jamil
-        Decision: 
-        """
-    ]
-    args=ModelArgs(vocab_size=vocab_size,max_batch_size=max_batch_size,max_seq_len=max_seq_len)
-    my_Llma=Llama.build(args=args)
-    text=my_Llma.text_completion()
-    for str_i in text:
-        print(str_i)
+#         sea otter => loutre de mer
+#         peppermint => menthe poivrée
+#         plush girafe => girafe peluche
+#         cheese =>""",
+#         # Zero shot prompt
+#         """Tell me if the following person is actually Doraemon disguised as human:
+#         Name: Umar Jamil
+#         Decision: 
+#         """
+#     ]
+#     args=ModelArgs(vocab_size=vocab_size,max_batch_size=max_batch_size,max_seq_len=max_seq_len)
+#     my_Llma=Llama.build(args=args)
+#     text=my_Llma.text_completion()
+#     for str_i in text:
+#         print(str_i)
 
     
 

@@ -511,8 +511,8 @@ def test_model():
     #     xq, xk=apply_rotary_emb(xq=xq,xk=xk,freqs_cis=freqs_cis)
 
     
-if __name__ == '__main__':
-    test_model()
+# if __name__ == '__main__':
+#     test_model()
 
 
 
