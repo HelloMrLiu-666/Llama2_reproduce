@@ -465,10 +465,10 @@ if __name__ == '__main__':
     # print(api.whoami())
     # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
 
-
-    print("HF_HOME:", os.environ.get("HF_HOME"))
-    print("TRANSFORMERS_CACHE:", os.environ.get("TRANSFORMERS_CACHE"))
-    print("HUGGINGFACE_HUB_CACHE:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
+    # #printing the visual studio huggingface model download path
+    # print("HF_HOME:", os.environ.get("HF_HOME"))
+    # print("TRANSFORMERS_CACHE:", os.environ.get("TRANSFORMERS_CACHE"))
+    # print("HUGGINGFACE_HUB_CACHE:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
     
     tokenizer = AutoTokenizer.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
     hug_model =  AutoModelForCausalLM.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
