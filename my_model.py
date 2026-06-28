@@ -454,65 +454,67 @@ class Transformer(nn.Module):
 
         return x
 
+class test_class():
+    @staticmethod
+    def test_model():
+        #following code is to login huggingface so as to make use the official Llama model, but Meta refused 
+        # Login with your token
+        # login(token="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")
+        # api = HfApi()
+        # print(api.whoami())
+        # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
 
-def test_model():
-    #following code is to login huggingface so as to make use the official Llama model, but Meta refused 
-    # Login with your token
-    # login(token="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")
-    # api = HfApi()
-    # print(api.whoami())
-    # tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
-
-    # #printing the visual studio huggingface model download path
-    # print("HF_HOME:", os.environ.get("HF_HOME"))
-    # print("TRANSFORMERS_CACHE:", os.environ.get("TRANSFORMERS_CACHE"))
-    # print("HUGGINGFACE_HUB_CACHE:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
-       
-    tokenizer = AutoTokenizer.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
-    hug_model =  AutoModelForCausalLM.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
-    vocab_size=tokenizer.vocab_size
-    my_ModelArgs=ModelArgs(vocab_size=vocab_size)    
+        # #printing the visual studio huggingface model download path
+        # print("HF_HOME:", os.environ.get("HF_HOME"))
+        # print("TRANSFORMERS_CACHE:", os.environ.get("TRANSFORMERS_CACHE"))
+        # print("HUGGINGFACE_HUB_CACHE:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
+        
+        tokenizer = AutoTokenizer.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
+        hug_model =  AutoModelForCausalLM.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
+        vocab_size=tokenizer.vocab_size
+        my_ModelArgs=ModelArgs(vocab_size=vocab_size)    
+        
     
-   
-    hug_config = hug_model.config
-    print(f"hug_config:{hug_config}")
-    print(f"hug_config:{hug_config}")
-    print(f"hug_config:{hug_config}")
+        hug_config = hug_model.config
+        print(f"hug_config:{hug_config}")
+        print(f"hug_config:{hug_config}")
+        print(f"hug_config:{hug_config}")
 
-    #test the RMS norm
-        # my_model=Transformer( params=my_ModelArgs)
-        # tokens=tokenizer.encode("Hello this is a test")
-        # tokens=torch.tensor(tokens,dtype=torch.long)
-        # x=tokens.unsqueeze(0).repeat(3,1)
-        # output=my_model(tokens=x, start_pos=1)
-        # RMS_NORM=RMSNorm(dim=my_ModelArgs.dim, eps= 1e-6)
-        # output=RMS_NORM(output)
+        #test the RMS norm
+            # my_model=Transformer( params=my_ModelArgs)
+            # tokens=tokenizer.encode("Hello this is a test")
+            # tokens=torch.tensor(tokens,dtype=torch.long)
+            # x=tokens.unsqueeze(0).repeat(3,1)
+            # output=my_model(tokens=x, start_pos=1)
+            # RMS_NORM=RMSNorm(dim=my_ModelArgs.dim, eps= 1e-6)
+            # output=RMS_NORM(output)
 
-    # #test repeat_kv
-    #     b,seq,n_kv_heads,head_dim=2,4,6,8
-    #     x=torch.rand(b,seq,n_kv_heads,head_dim)
-    #     repeated_kv=repeat_kv(x=x, n_rep=2)#(b,seq,n_kv_heads,head_dim)->(b,seq,n_rep*n_kv_heads,head_dim)
-    #     print("hahah")
+        # #test repeat_kv
+        #     b,seq,n_kv_heads,head_dim=2,4,6,8
+        #     x=torch.rand(b,seq,n_kv_heads,head_dim)
+        #     repeated_kv=repeat_kv(x=x, n_rep=2)#(b,seq,n_kv_heads,head_dim)->(b,seq,n_rep*n_kv_heads,head_dim)
+        #     print("hahah")
 
-    # #test ROPE!!
-    # #test precompute_freqs_cis
-    #     b,seq,n_heads,head_dim=1,1,1,6
-    #     freqs_cis=precompute_freqs_cis(dim=head_dim, end=4, theta = 10000.0)
-    # #test reshape_for_broadcast
-    #     freqs_cis=freqs_cis[2:3,:] #
-    #     # x=torch.rand(b,seq,n_heads,head_dim//2)
-    #     # reshape_freqs_cis=reshape_for_broadcast(freqs_cis=freqs_cis, x=x)
-    # #test apply_rotary_emb
-    #     n_kv_heads=1
-    #     xq=torch.range(start=0, end=head_dim-1, step=1)
-    #     xq=xq[None, None, None, :]#(b,seq,n_heads,head_dim)
-    #     xk=torch.range(start=1, end=head_dim, step=1)
-    #     xk=xk[None, None, None, :]#(b,seq,n_kv_heads,head_dim)
-    #     xq, xk=apply_rotary_emb(xq=xq,xk=xk,freqs_cis=freqs_cis)
+        # #test ROPE!!
+        # #test precompute_freqs_cis
+        #     b,seq,n_heads,head_dim=1,1,1,6
+        #     freqs_cis=precompute_freqs_cis(dim=head_dim, end=4, theta = 10000.0)
+        # #test reshape_for_broadcast
+        #     freqs_cis=freqs_cis[2:3,:] #
+        #     # x=torch.rand(b,seq,n_heads,head_dim//2)
+        #     # reshape_freqs_cis=reshape_for_broadcast(freqs_cis=freqs_cis, x=x)
+        # #test apply_rotary_emb
+        #     n_kv_heads=1
+        #     xq=torch.range(start=0, end=head_dim-1, step=1)
+        #     xq=xq[None, None, None, :]#(b,seq,n_heads,head_dim)
+        #     xk=torch.range(start=1, end=head_dim, step=1)
+        #     xk=xk[None, None, None, :]#(b,seq,n_kv_heads,head_dim)
+        #     xq, xk=apply_rotary_emb(xq=xq,xk=xk,freqs_cis=freqs_cis)
 
     
 if __name__ == '__main__':
-    test_model()
+    test=test_class()
+    test.test_model()
 
 
 
