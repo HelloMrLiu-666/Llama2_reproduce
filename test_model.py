@@ -1,9 +1,12 @@
 from my_model import RMSNorm
 from transformers import AutoTokenizer
+from my_model import precompute_freqs_cis,test_class
 
-def test_RMS_NORM():
-    RMS_NORM=RMSNorm(dim: int, eps: float = 1e-6)
-    tokenizer = AutoTokenizer.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
+def test():
+    test1=test_class()
+    test1.test_model()
+
 
 
 if __name__ == '__main__':
+    test()
