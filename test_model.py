@@ -8,5 +8,5 @@ from my_model import precompute_freqs_cis,test_model
 
 
 
-# if __name__ == '__main__':
-#     test_model()
+if __name__ == '__main__':
+    test_model()
