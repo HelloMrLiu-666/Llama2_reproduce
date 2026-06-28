@@ -469,14 +469,16 @@ if __name__ == '__main__':
     # print("HF_HOME:", os.environ.get("HF_HOME"))
     # print("TRANSFORMERS_CACHE:", os.environ.get("TRANSFORMERS_CACHE"))
     # print("HUGGINGFACE_HUB_CACHE:", os.environ.get("HUGGINGFACE_HUB_CACHE"))
-    
+       
     tokenizer = AutoTokenizer.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
     hug_model =  AutoModelForCausalLM.from_pretrained("TinyPixel/Llama-2-7B-bf16-sharded")
     vocab_size=tokenizer.vocab_size
     my_ModelArgs=ModelArgs(vocab_size=vocab_size)    
     
-
+   
     hug_config = hug_model.config
+    print(f"hug_config:{hug_config}")
+    print(f"hug_config:{hug_config}")
     print(f"hug_config:{hug_config}")
 
 
