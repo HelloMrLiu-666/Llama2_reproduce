@@ -475,7 +475,7 @@ def check_my_model():
     
 
     hug_config = hug_model.config
-    print("test_github_to_kaggle")
+    print("clear_or_seesion")
     print(f"hug_config:{hug_config}")
     return hug_model
 
