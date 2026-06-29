@@ -476,8 +476,8 @@ def check_my_model():
 
     hug_config = hug_model.config
     print(f"hug_config:{hug_config}")
-    # print(f"hug_config:{hug_config}")
-    # print(f"hug_config:{hug_config}")
+    return hug_model
+
 
     #test the RMS norm
         # my_model=Transformer( params=my_ModelArgs)
