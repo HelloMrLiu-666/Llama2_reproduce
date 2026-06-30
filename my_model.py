@@ -33,10 +33,10 @@ class ModelArgs:
     max_seq_len: int = 2048
 
 
-class RMSNorm(torch.nn.Module):
-    def __init__(self, dim: int, eps: float = 1e-6):
+class LlamaRMSNorm(torch.nn.Module):
+    def __init__(self, dim: int, eps: float = 1e-6) ->None:
         """
-        Initialize the RMSNorm normalization layer.
+        Initialize the LlamaRMSNorm normalization layer.
 
         Args:
             dim (int): The dimension of the input tensor.
@@ -48,42 +48,30 @@ class RMSNorm(torch.nn.Module):
 
         """
         super().__init__()
-        self.eps = eps
+        self.variance_epsilon = eps
         self.weight = nn.Parameter(data=torch.ones([1,1,dim], dtype=torch.float32))
         # self.weight=nn.Parameter(data=torch.range(start=0, end=dim-1, step=1))#just for test
         
-
-    def _norm(self, x):
+    def forward(self, x) ->torch.Tensor: 
         """
-        Apply the RMSNorm normalization to the input tensor.
+        Forward pass through the LlamaRMSNorm layer.
 
         Args:
-            x (torch.Tensor): The input tensor.
+            x (torch.Tensor): The input tensor.        #(B,seq,dim)
 
         Returns:
-            torch.Tensor: The normalized tensor.
+            torch.Tensor: The output tensor after applying LlamaRMSNorm. (B,seq,dim)
 
         """
         # temp=x[0,0,:]#just for test
+        input_dtype=x.dtype
+        x=x.to(torch.float32)
         x_powered=torch.pow(x, 2) #element wise power 2, (B,seq,dim)
-        x_mean=torch.mean(x_powered, dim=2, keepdim=True)# (B,seq,dim)-> (B,seq,1)
-        x_rms=torch.pow(x_mean, 0.5) #(B,seq,1)
-        output=x/(x_rms+self.eps) #(B,seq,dim)/(B,seq,1) ->broadcasting to (B,seq,dim)
-        return output
-
-    def forward(self, x):
-        """
-        Forward pass through the RMSNorm layer.
-
-        Args:
-            x (torch.Tensor): The input tensor.
-
-        Returns:
-            torch.Tensor: The output tensor after applying RMSNorm.
-
-        """
+        variance=torch.mean(x_powered, dim=2, keepdim=True)# (B,seq,dim)-> (B,seq,1) 
+        x_rms=torch.pow(variance+self.variance_epsilon, 0.5) #(B,seq,1)
+        output=x/x_rms #(B,seq,dim)/(B,seq,1) ->broadcasting to (B,seq,dim)
         output=self.weight * self._norm(x) # (B,seq,dim)*(1,1,dim) -> broadcastint to (B,seq,dim)
-        return output
+        return output.to(input_dtype)
 
 
 def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0): 
@@ -347,8 +335,8 @@ class TransformerBlock(nn.Module):
             attention (Attention): Attention module.
             feed_forward (FeedForward): FeedForward module.
             layer_id (int): Identifier for the layer.
-            attention_norm (RMSNorm): Layer normalization for attention output.
-            ffn_norm (RMSNorm): Layer normalization for feedforward output.
+            attention_norm (LlamaRMSNorm): Layer normalization for attention output.
+            ffn_norm (LlamaRMSNorm): Layer normalization for feedforward output.
 
         """
         super().__init__()
@@ -358,8 +346,8 @@ class TransformerBlock(nn.Module):
         self.attention = Attention(args)
         self.feed_forward = FeedForward(self.dim,self.hidden_dim, args.multiple_of)
         self.layer_id = layer_id
-        self.attention_norm = RMSNorm(self.dim)
-        self.ffn_norm = RMSNorm(self.dim)
+        self.attention_norm = LlamaRMSNorm(self.dim)
+        self.ffn_norm = LlamaRMSNorm(self.dim)
 
 
 
@@ -404,7 +392,7 @@ class Transformer(nn.Module):
             n_layers (int): Number of layers in the model.
             tok_embeddings (ParallelEmbedding): Token embeddings.
             layers (torch.nn.ModuleList): List of Transformer blocks.
-            norm (RMSNorm): Layer normalization for the model output.
+            norm (LlamaRMSNorm): Layer normalization for the model output.
             output (ColumnParallelLinear): Linear layer for final output.
             freqs_cis (torch.Tensor): Precomputed cosine and sine frequencies.
 
@@ -420,7 +408,7 @@ class Transformer(nn.Module):
         for layer_id in range(self.n_layers):
             self.layers.append(TransformerBlock(layer_id, params))
 
-        self.norm =RMSNorm(params.dim)
+        self.norm =LlamaRMSNorm(params.dim)
         self.output =  nn.Linear(params.dim, self.vocab_size, bias=False)
 
         # Note that self.params.max_seq_len is multiplied by 2 because the token limit for the Llama 2 generation of models is 4096. 
@@ -486,7 +474,7 @@ def check_my_model():
         # tokens=torch.tensor(tokens,dtype=torch.long)
         # x=tokens.unsqueeze(0).repeat(3,1)
         # output=my_model(tokens=x, start_pos=1)
-        # RMS_NORM=RMSNorm(dim=my_ModelArgs.dim, eps= 1e-6)
+        # RMS_NORM=LlamaRMSNorm(dim=my_ModelArgs.dim, eps= 1e-6)
         # output=RMS_NORM(output)
 
     # #test repeat_kv
